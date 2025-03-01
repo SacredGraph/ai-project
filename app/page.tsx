@@ -5,12 +5,19 @@ export default function Home() {
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
-          className="dark:invert"
+          className="dark:invert shadow-[0_0_15px_rgba(255,255,255,0.5)]"
           src="/next.svg"
           alt="Next.js logo"
           width={180}
           height={38}
           priority
+        />
+        <Image 
+          src="https://picsum.photos/200/300"
+          alt="Random image from picsum.photos"
+          width={200}
+          height={300}
+          className="rounded-md shadow-md"
         />
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
