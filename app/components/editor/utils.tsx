@@ -115,6 +115,38 @@ export const toggleList = (editor: Editor, format: 'bulleted-list' | 'numbered-l
   toggleBlock(editor, format);
 export const toggleBlockQuote = (editor: Editor) => toggleBlock(editor, 'block-quote');
 
+// Toggle checklist item
+export const toggleChecklist = (editor: Editor) => {
+  const isActive = isBlockActive(editor, 'checklist-item');
+  
+  // Unwrap any list items if needed
+  Transforms.unwrapNodes(editor, {
+    match: (n) => {
+      if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
+        // Need to cast through unknown first to avoid TypeScript errors
+        const element = n as unknown as { type?: string };
+        if (element.type && ['bulleted-list', 'numbered-list', 'checklist'].includes(element.type)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    split: true,
+  });
+
+  // Set the nodes to checklist items or paragraphs
+  Transforms.setNodes(editor, {
+    type: isActive ? 'paragraph' : 'checklist-item',
+    checked: isActive ? undefined : false,
+  });
+
+  // If we're creating checklist items, wrap them in a checklist container
+  if (!isActive) {
+    const block = { type: 'checklist', children: [] };
+    Transforms.wrapNodes(editor, block);
+  }
+};
+
 // Leaf rendering
 export const RenderLeaf = (props: CustomRenderLeafProps): ReactElement => {
   const { attributes, children, leaf } = props;
