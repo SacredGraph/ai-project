@@ -42,6 +42,7 @@ export type ChecklistItemElement = {
   type: 'checklist-item';
   checked: boolean;
   children: (CustomText | EmptyText)[];
+  data: ChecklistItemData;
 };
 
 export type ChecklistElement = {
@@ -120,8 +121,6 @@ export const RenderElement = (props: CustomRenderElementProps): ReactElement => 
       return <ol {...attributes}>{children}</ol>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
-    case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>;
     case 'checklist-item':
       return (
         <div className="flex items-start" {...attributes}>
@@ -143,6 +142,8 @@ export const RenderElement = (props: CustomRenderElementProps): ReactElement => 
       );
     case 'checklist':
       return <div className="checklist" {...attributes}>{children}</div>;
+    case 'block-quote':
+      return <blockquote {...attributes}>{children}</blockquote>;
     default:
       return <p {...attributes}>{children}</p>;
   }
