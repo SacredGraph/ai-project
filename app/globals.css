@@ -1,24 +1,24 @@
-@import "tailwindcss";
-
-@theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Radix UI Theme overrides */
+  --color-background: var(--background);
+  --color-text: var(--foreground);
+  --radix-font-family: var(--font-geist-sans);
+  --radix-code-font-family: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark-theme {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  
+  /* Radix UI Theme overrides for dark mode */
+  --color-background: var(--background);
+  --color-text: var(--foreground);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
