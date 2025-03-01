@@ -23,6 +23,13 @@ export default function Home() {
         />
         <p className="text-sm text-gray-600">A random beautiful image!</p>
       </div>
+      
+      <a 
+        href="mailto:maxim@sacredgraph.com?subject=Hello%20from%20AI"
+        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      >
+        Contact Me
+      </a>
     </div>
   );
 }
