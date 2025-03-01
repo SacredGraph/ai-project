@@ -3,44 +3,21 @@
   --font-mono: var(--font-geist-mono);
   --background: #ffffff;
   --foreground: #171717;
-  --light-mode: initial;
-  --dark-mode: none;
   
-  /* Radix UI theme variables */
-  --radius-1: 4px;
-  --radius-2: 6px;
-  --radius-3: 8px;
-  --radius-4: 12px;
-  --radius-full: 9999px;
-  
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-7: 32px;
-  --space-8: 40px;
-  --space-9: 48px;
-  
-  --size-1: 4px;
-  --size-2: 8px;
-  --size-3: 12px;
-  --size-4: 16px;
-  --size-5: 20px;
-  --size-6: 24px;
-  --size-7: 32px;
-  --size-8: 40px;
-  --size-9: 48px;
+  /* Radix UI Theme overrides */
+  --color-background: var(--background);
+  --color-text: var(--foreground);
+  --radix-font-family: var(--font-geist-sans);
+  --radix-code-font-family: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --light-mode: none;
-    --dark-mode: invert(1);
-  }
+.dark-theme {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  
+  /* Radix UI Theme overrides for dark mode */
+  --color-background: var(--background);
+  --color-text: var(--foreground);
 }
 
 * {
@@ -52,152 +29,24 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-sans, Arial, Helvetica, sans-serif);
-  line-height: 1.5;
-}
-
-/* Responsive classes */
-.container {
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
+  font-family: var(--font-sans, Arial, sans-serif);
   min-height: 100vh;
-  padding: var(--space-8);
-  padding-bottom: var(--space-9);
-  gap: var(--space-8);
-  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-7);
-  grid-row-start: 2;
-  align-items: center;
+/* Adjust Radix UI components to work with Tailwind */
+[data-radix-popper-content-wrapper] {
+  z-index: 50 !important; /* Match Tailwind's z-index scale */
 }
 
-.button-container {
-  display: flex;
-  gap: var(--space-4);
-  align-items: center;
-  flex-direction: column;
-}
-
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: var(--space-6);
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-}
-
-.list {
-  list-style-position: inside;
-  list-style-type: decimal;
-  font-size: var(--size-3);
-  text-align: center;
-  font-family: var(--font-mono);
-}
-
-.list li:first-child {
-  margin-bottom: var(--space-2);
-}
-
-@media (min-width: 640px) {
-  .list {
-    text-align: left;
-  }
-}
-
-.code {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 0 var(--space-1) var(--space-1) var(--space-1);
-  border-radius: var(--radius-1);
-  font-weight: 600;
-}
-
-.dark .code {
-  background-color: rgba(255, 255, 255, 0.06);
-}
-
-.button-primary {
-  border-radius: var(--radius-full);
-  border: 1px solid transparent;
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--foreground);
-  color: var(--background);
-  gap: var(--space-2);
-  font-size: var(--size-3);
-  height: var(--size-8);
-  padding: 0 var(--space-4);
-}
-
-.button-secondary {
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--size-3);
-  height: var(--size-8);
-  padding: 0 var(--space-4);
-}
-
-.button-primary:hover {
-  background-color: #383838;
-}
-
-.dark .button-primary:hover {
-  background-color: #ccc;
-}
-
-.button-secondary:hover {
-  background-color: #f2f2f2;
-  border-color: transparent;
-}
-
-.dark .button-secondary:hover {
-  background-color: #1a1a1a;
-  border-color: transparent;
-}
-
-.footer-link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-@media (min-width: 640px) {
-  .container {
-    padding: var(--space-9);
-  }
-  
-  .main {
-    align-items: flex-start;
-  }
-  
-  .button-container {
-    flex-direction: row;
-  }
-  
-  .button-primary, .button-secondary {
-    font-size: var(--size-4);
-    height: var(--size-9);
-    padding: 0 var(--space-5);
-  }
-  
-  .button-secondary {
-    min-width: 11rem;
-  }
+/* Ensure Radix components get proper Tailwind spacing */
+.radix-themes {
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
 }
