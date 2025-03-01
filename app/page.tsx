@@ -1,35 +1,82 @@
 import Image from "next/image";
+import { Button, Flex, Card, Text, Heading, Box, Tabs, Badge, Tooltip } from '@radix-ui/themes';
+import { InfoCircledIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-4xl font-bold mb-8">Hello world!</h1>
+    <Flex direction="column" align="center" justify="center" className="min-h-screen p-8">
+      <Heading size="7" className="mb-8">Hello world with Radix UI!</Heading>
       
-      <div className="flex flex-col items-center gap-4">
-        <Image
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-          className="rounded-lg dark:invert shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-        />
-        <Image 
-          src="https://picsum.photos/300/300"
-          alt="Random image from picsum.photos"
-          width={300}
-          height={300}
-          className="rounded-md shadow-md"
-        />
-        <p className="text-sm text-gray-600">A random beautiful image!</p>
-      </div>
+      <Card className="mb-8 max-w-md">
+        <Flex direction="column" gap="4" align="center">
+          <Image
+            src="/next.svg"
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+            className="rounded-lg dark:invert"
+          />
+          
+          <Tabs.Root defaultValue="image">
+            <Tabs.List>
+              <Tabs.Trigger value="image">Random Image</Tabs.Trigger>
+              <Tabs.Trigger value="info">Info</Tabs.Trigger>
+            </Tabs.List>
+            
+            <Tabs.Content value="image">
+              <Box className="p-4">
+                <Image 
+                  src="https://picsum.photos/300/300"
+                  alt="Random image from picsum.photos"
+                  width={300}
+                  height={300}
+                  className="rounded-md shadow-md"
+                />
+                <Text as="p" size="2" color="gray" className="mt-2 text-center">
+                  A random beautiful image!
+                </Text>
+              </Box>
+            </Tabs.Content>
+            
+            <Tabs.Content value="info">
+              <Box className="p-4">
+                <Text as="p" size="2">
+                  This app demonstrates the integration of Radix UI with Next.js and Tailwind CSS.
+                  The theme automatically adapts to your system preferences.
+                </Text>
+                
+                <Flex gap="2" mt="4">
+                  <Badge color="blue" variant="soft">
+                    <Flex gap="1" align="center">
+                      <SunIcon />
+                      Light Mode
+                    </Flex>
+                  </Badge>
+                  
+                  <Badge color="gray" variant="soft">
+                    <Flex gap="1" align="center">
+                      <MoonIcon />
+                      Dark Mode
+                    </Flex>
+                  </Badge>
+                </Flex>
+              </Box>
+            </Tabs.Content>
+          </Tabs.Root>
+        </Flex>
+      </Card>
       
-      <a 
-        href="mailto:maxim@sacredgraph.com?subject=Hello%20from%20AI"
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-      >
-        Contact Me
-      </a>
-    </div>
+      <Tooltip content="Click to send an email">
+        <Button size="3" variant="solid" asChild>
+          <a href="mailto:maxim@sacredgraph.com?subject=Hello%20from%20AI">
+            <Flex gap="1" align="center">
+              <InfoCircledIcon />
+              Contact Me
+            </Flex>
+          </a>
+        </Button>
+      </Tooltip>
+    </Flex>
   );
 }
