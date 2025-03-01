@@ -7,14 +7,14 @@ export default function Home() {
       
       <div className="flex flex-col items-center gap-4">
         <Image
-          src="https://placekitten.com/300/300"
-          alt="Adorable kitten"
+          src="https://picsum.photos/300/300"
+          alt="Random image"
           width={300}
           height={300}
           priority
           className="rounded-lg"
         />
-        <p className="text-sm text-gray-600">A cute kitten for your enjoyment!</p>
+        <p className="text-sm text-gray-600">A random beautiful image!</p>
       </div>
     </div>
   );
