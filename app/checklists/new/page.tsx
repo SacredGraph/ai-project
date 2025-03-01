@@ -6,13 +6,14 @@ import { ArrowLeftIcon, CheckCircledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import SlateEditor from '../../components/editor/slate-editor';
 import { Descendant } from 'slate';
+import { ChecklistItemElement } from '../../components/editor/elements';
 
 export default function NewChecklistPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   
   // Initial value for the Slate editor
-  const [editorValue, setEditorValue] = useState<Descendant[]>([
+  const [editorValue, setEditorValue] = useState<(ChecklistItemElement | Descendant)[]>([
     {
       type: 'checklist-item',
       checked: false,
@@ -82,7 +83,7 @@ export default function NewChecklistPage() {
           </Box>
           
           <Box>
-            <Text as="label" size="2" weight="bold" mb="2" display="block">
+            <Text as="label" size="2" weight="bold" className="mb-2 block">
               Checklist Items
             </Text>
             <Box className="border rounded-md p-2">

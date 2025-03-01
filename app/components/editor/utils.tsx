@@ -2,6 +2,7 @@ import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { RenderLeafProps } from 'slate-react';
 import { CustomText } from './types';
 import React, { ReactElement } from 'react';
+import { ChecklistItemElement, ParagraphElement } from './elements';
 
 // Type for custom leaf props
 interface CustomRenderLeafProps extends RenderLeafProps {
@@ -135,10 +136,16 @@ export const toggleChecklist = (editor: Editor) => {
   });
 
   // Set the nodes to checklist items or paragraphs
-  Transforms.setNodes(editor, {
-    type: isActive ? 'paragraph' : 'checklist-item',
-    checked: isActive ? undefined : false,
-  });
+  if (isActive) {
+    Transforms.setNodes<ParagraphElement>(editor, {
+      type: 'paragraph',
+    });
+  } else {
+    Transforms.setNodes<ChecklistItemElement>(editor, {
+      type: 'checklist-item',
+      checked: false,
+    });
+  }
 
   // If we're creating checklist items, wrap them in a checklist container
   if (!isActive) {

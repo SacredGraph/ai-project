@@ -4,7 +4,7 @@ import type { ReactElement } from 'react';
 import { useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 
-import { EmptyText, CustomText, ChecklistItemData } from './types';
+import { EmptyText, CustomText, CustomEditor } from './types';
 
 // Define the types for our custom elements
 export type ParagraphElement = {
@@ -42,7 +42,6 @@ export type ChecklistItemElement = {
   type: 'checklist-item';
   checked: boolean;
   children: (CustomText | EmptyText)[];
-  data: ChecklistItemData;
 };
 
 export type ChecklistElement = {
@@ -93,7 +92,7 @@ const CheckboxComponent = ({ checked, onChange }: { checked: boolean; onChange: 
 // Render element component
 export const RenderElement = (props: CustomRenderElementProps): ReactElement => {
   const { attributes, children, element } = props;
-  const editor = useSlate();
+  const editor = useSlate() as CustomEditor;
 
   switch (element.type) {
     case 'paragraph':
@@ -128,7 +127,7 @@ export const RenderElement = (props: CustomRenderElementProps): ReactElement => 
             checked={element.checked} 
             onChange={() => {
               const path = ReactEditor.findPath(editor, element);
-              Transforms.setNodes(
+              Transforms.setNodes<ChecklistItemElement>(
                 editor,
                 { checked: !element.checked },
                 { at: path }

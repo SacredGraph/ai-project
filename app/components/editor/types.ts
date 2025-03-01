@@ -1,4 +1,5 @@
 import { Editor } from 'slate';
+import { ReactEditor } from 'slate-react';
 
 // Custom text types
 export interface CustomText {
@@ -14,7 +15,7 @@ export type EmptyText = {
 };
 
 // Custom editor type
-export type CustomEditor = Editor & {
+export type CustomEditor = Editor & ReactEditor & {
   // Add any custom methods here if needed
 };
 
