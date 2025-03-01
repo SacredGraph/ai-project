@@ -17,3 +17,8 @@ export type EmptyText = {
 export type CustomEditor = Editor & {
   // Add any custom methods here if needed
 };
+
+// Additional type for checklist items
+export interface ChecklistItemData {
+  checked: boolean;
+}
