@@ -4,10 +4,15 @@ import { InfoCircledIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 
 export default function Home() {
   return (
-    <Flex direction="column" align="center" justify="center" className="min-h-screen p-8">
-      <Heading size="7" className="mb-8">Hello world with Radix UI!</Heading>
+    <Flex 
+      direction="column" 
+      align="center" 
+      justify="center" 
+      style={{ minHeight: "100vh", padding: "2rem" }}
+    >
+      <Heading size="7" style={{ marginBottom: "2rem" }}>Hello world with Radix UI!</Heading>
       
-      <Card className="mb-8 max-w-md">
+      <Card style={{ marginBottom: "2rem", maxWidth: "28rem" }}>
         <Flex direction="column" gap="4" align="center">
           <Image
             src="/next.svg"
@@ -15,7 +20,10 @@ export default function Home() {
             width={180}
             height={38}
             priority
-            className="rounded-lg dark:invert"
+            style={{ 
+              borderRadius: "0.5rem",
+              filter: "var(--foreground) === '#ededed' ? 'invert(1)' : 'none'"
+            }}
           />
           
           <Tabs.Root defaultValue="image">
@@ -25,24 +33,27 @@ export default function Home() {
             </Tabs.List>
             
             <Tabs.Content value="image">
-              <Box className="p-4">
+              <Box style={{ padding: "1rem" }}>
                 <Image 
                   src="https://picsum.photos/300/300"
                   alt="Random image from picsum.photos"
                   width={300}
                   height={300}
-                  className="rounded-md shadow-md"
+                  style={{ 
+                    borderRadius: "0.375rem",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+                  }}
                 />
-                <Text as="p" size="2" color="gray" className="mt-2 text-center">
+                <Text as="p" size="2" color="gray" style={{ marginTop: "0.5rem", textAlign: "center" }}>
                   A random beautiful image!
                 </Text>
               </Box>
             </Tabs.Content>
             
             <Tabs.Content value="info">
-              <Box className="p-4">
+              <Box style={{ padding: "1rem" }}>
                 <Text as="p" size="2">
-                  This app demonstrates the integration of Radix UI with Next.js and Tailwind CSS.
+                  This app demonstrates the integration of Radix UI with Next.js.
                   The theme automatically adapts to your system preferences.
                 </Text>
                 

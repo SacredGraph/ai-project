@@ -35,12 +35,12 @@ body {
   padding: 0;
 }
 
-/* Adjust Radix UI components to work with Tailwind */
+/* Radix UI z-index */
 [data-radix-popper-content-wrapper] {
-  z-index: 50 !important; /* Match Tailwind's z-index scale */
+  z-index: 50 !important;
 }
 
-/* Ensure Radix components get proper Tailwind spacing */
+/* Spacing variables for components */
 .radix-themes {
   --space-1: 0.25rem;
   --space-2: 0.5rem;
