@@ -1,6 +1,6 @@
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { RenderLeafProps } from 'slate-react';
-import { CustomText } from './types';
+import { CustomText, ElementType, CustomElement } from './types';
 import React, { ReactElement } from 'react';
 
 // Type for custom leaf props
@@ -103,17 +103,47 @@ export const toggleBlock = (
 
   // Wrap in list if needed
   if (!isActive && isList) {
-    const block = { type: format, children: [] };
+    const block: CustomElement = { 
+      type: format as ElementType, 
+      children: [] 
+    };
     Transforms.wrapNodes(editor, block);
   }
 };
 
 // Shortcut functions for blocks
-export const toggleHeading = (editor: Editor, level: number) => 
-  toggleBlock(editor, 'heading', { level });
+export const toggleHeadingOne = (editor: Editor) => toggleBlock(editor, 'heading-one');
+export const toggleHeadingTwo = (editor: Editor) => toggleBlock(editor, 'heading-two');
+export const toggleHeadingThree = (editor: Editor) => toggleBlock(editor, 'heading-three');
 export const toggleList = (editor: Editor, format: 'bulleted-list' | 'numbered-list') => 
   toggleBlock(editor, format);
 export const toggleBlockQuote = (editor: Editor) => toggleBlock(editor, 'block-quote');
+
+// Toggle checklist item
+export const toggleChecklistItem = (editor: Editor) => {
+  const isActive = isBlockActive(editor, 'checklist-item');
+  
+  // Unwrap any list items if needed
+  Transforms.unwrapNodes(editor, {
+    match: (n) => {
+      if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
+        const element = n as unknown as { type?: string };
+        if (element.type && ['bulleted-list', 'numbered-list'].includes(element.type)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    split: true,
+  });
+
+  const newProperties: Record<string, unknown> = {
+    type: isActive ? 'paragraph' : 'checklist-item',
+    checked: isActive ? undefined : false,
+  };
+
+  Transforms.setNodes(editor, newProperties);
+};
 
 // Leaf rendering
 export const RenderLeaf = (props: CustomRenderLeafProps): ReactElement => {

@@ -1,0 +1,45 @@
+# Exclude git and GitHub files
+.git
+.github
+.gitignore
+
+# Exclude local development files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Exclude Docker files
+.dockerignore
+
+# Exclude test files
+test_*.py
+tests/
+
+# Exclude documentation
+README.md
+LICENSE
+*.md
+
+# Exclude Cloud Build files
+cloudbuild.yaml
+
+# Explicitly include .claude directory
+!.claude/
+!.claude/* 

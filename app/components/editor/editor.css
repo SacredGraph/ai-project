@@ -1,0 +1,93 @@
+.slate-editor {
+  width: 100%;
+  position: relative;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: var(--gray-2);
+  border-radius: 4px;
+  gap: 4px;
+}
+
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: var(--gray-3);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toolbar-button:hover {
+  background-color: var(--gray-4);
+}
+
+.toolbar-button.active {
+  background-color: var(--gray-5);
+  color: var(--gray-12);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 30px;
+  background-color: var(--gray-6);
+  margin: 0 4px;
+}
+
+/* Checklist styling */
+[data-slate-type="checklist-item"] {
+  display: flex;
+  align-items: flex-start;
+  margin: 4px 0;
+}
+
+[data-slate-type="checklist-item"] input[type="checkbox"] {
+  margin-right: 8px;
+  margin-top: 4px;
+}
+
+/* Heading styles */
+[data-slate-type="heading-one"] {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+[data-slate-type="heading-two"] {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+[data-slate-type="heading-three"] {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+/* List styles */
+[data-slate-type="bulleted-list"] {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+[data-slate-type="numbered-list"] {
+  padding-left: 20px;
+  list-style-type: decimal;
+}
+
+/* Block quote */
+[data-slate-type="block-quote"] {
+  border-left: 2px solid var(--gray-6);
+  padding-left: 10px;
+  color: var(--gray-11);
+  font-style: italic;
+}

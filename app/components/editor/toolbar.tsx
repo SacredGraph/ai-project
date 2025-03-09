@@ -6,9 +6,12 @@ import {
   toggleItalic,
   toggleUnderline,
   toggleCode,
-  toggleHeading,
+  toggleHeadingOne,
+  toggleHeadingTwo,
+  toggleHeadingThree,
   toggleList,
   toggleBlockQuote,
+  toggleChecklistItem,
   isMarkActive,
   isBlockActive
 } from './utils';
@@ -80,22 +83,22 @@ const Toolbar: React.FC<ToolbarProps> = ({ className = '', selection }) => {
       />
       <span className="toolbar-divider" />
       <ToolbarButton
-        format="heading-1"
+        format="heading-one"
         icon="H1"
-        onClick={() => toggleHeading(editor, 1)}
-        isActive={isBlockActive(editor, 'heading', { level: 1 })}
+        onClick={() => toggleHeadingOne(editor)}
+        isActive={isBlockActive(editor, 'heading-one')}
       />
       <ToolbarButton
-        format="heading-2"
+        format="heading-two"
         icon="H2"
-        onClick={() => toggleHeading(editor, 2)}
-        isActive={isBlockActive(editor, 'heading', { level: 2 })}
+        onClick={() => toggleHeadingTwo(editor)}
+        isActive={isBlockActive(editor, 'heading-two')}
       />
       <ToolbarButton
-        format="heading-3"
+        format="heading-three"
         icon="H3"
-        onClick={() => toggleHeading(editor, 3)}
-        isActive={isBlockActive(editor, 'heading', { level: 3 })}
+        onClick={() => toggleHeadingThree(editor)}
+        isActive={isBlockActive(editor, 'heading-three')}
       />
       <span className="toolbar-divider" />
       <ToolbarButton
@@ -115,6 +118,13 @@ const Toolbar: React.FC<ToolbarProps> = ({ className = '', selection }) => {
         icon="❝"
         onClick={() => toggleBlockQuote(editor)}
         isActive={isBlockActive(editor, 'block-quote')}
+      />
+      <span className="toolbar-divider" />
+      <ToolbarButton
+        format="checklist-item"
+        icon="✓"
+        onClick={() => toggleChecklistItem(editor)}
+        isActive={isBlockActive(editor, 'checklist-item')}
       />
     </div>
   );
