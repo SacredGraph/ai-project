@@ -2,6 +2,8 @@ import React from 'react';
 import { Transforms } from 'slate';
 import { RenderElementProps, useSlateStatic, ReactEditor } from 'slate-react';
 import type { ReactElement } from 'react';
+import { useSlate } from 'slate-react';
+import { Transforms } from 'slate';
 
 import { EmptyText, CustomText, CustomElement as TypesCustomElement } from './types';
 
@@ -67,6 +69,17 @@ export type BlockQuoteElement = {
   children: (CustomText | EmptyText)[];
 };
 
+export type ChecklistItemElement = {
+  type: 'checklist-item';
+  checked: boolean;
+  children: (CustomText | EmptyText)[];
+};
+
+export type ChecklistElement = {
+  type: 'checklist';
+  children: ChecklistItemElement[];
+};
+
 // Union type for all custom elements
 export type CustomElement = 
   | ParagraphElement 
@@ -80,11 +93,37 @@ export type CustomElement =
   | ChecklistItemElement
   | BulletedListElement 
   | NumberedListElement 
-  | BlockQuoteElement;
+  | BlockQuoteElement
+  | ChecklistItemElement
+  | ChecklistElement;
 
 // Type for render element props with our custom element type
 export type CustomRenderElementProps = Omit<RenderElementProps, 'element'> & {
   element: TypesCustomElement;
+};
+
+// Checkbox component for checklist items
+const CheckboxComponent = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => {
+  return (
+    <span 
+      contentEditable={false} 
+      className="mr-2 inline-flex"
+      onClick={(e) => {
+        e.preventDefault();
+        onChange();
+      }}
+    >
+      <input 
+        type="checkbox" 
+        checked={checked} 
+        onChange={(e) => {
+          e.preventDefault();
+          onChange();
+        }}
+        className="mr-1 h-4 w-4 cursor-pointer"
+      />
+    </span>
+  );
 };
 
 // Render element component
