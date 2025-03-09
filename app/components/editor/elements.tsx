@@ -1,10 +1,9 @@
 import React from 'react';
-import { RenderElementProps, ReactEditor } from 'slate-react';
-import type { ReactElement } from 'react';
-import { useSlate } from 'slate-react';
 import { Transforms } from 'slate';
+import { RenderElementProps, useSlateStatic, ReactEditor } from 'slate-react';
+import type { ReactElement } from 'react';
 
-import { EmptyText, CustomText, CustomEditor } from './types';
+import { EmptyText, CustomText, CustomElement as TypesCustomElement } from './types';
 
 // Define the types for our custom elements
 export type ParagraphElement = {
@@ -12,14 +11,44 @@ export type ParagraphElement = {
   children: (CustomText | EmptyText)[];
 };
 
-export type HeadingElement = {
-  type: 'heading';
-  level: 1 | 2 | 3 | 4 | 5 | 6;
+export type HeadingOneElement = {
+  type: 'heading-one';
+  children: (CustomText | EmptyText)[];
+};
+
+export type HeadingTwoElement = {
+  type: 'heading-two';
+  children: (CustomText | EmptyText)[];
+};
+
+export type HeadingThreeElement = {
+  type: 'heading-three';
+  children: (CustomText | EmptyText)[];
+};
+
+export type HeadingFourElement = {
+  type: 'heading-four';
+  children: (CustomText | EmptyText)[];
+};
+
+export type HeadingFiveElement = {
+  type: 'heading-five';
+  children: (CustomText | EmptyText)[];
+};
+
+export type HeadingSixElement = {
+  type: 'heading-six';
   children: (CustomText | EmptyText)[];
 };
 
 export type ListItemElement = {
   type: 'list-item';
+  children: (CustomText | EmptyText)[];
+};
+
+export type ChecklistItemElement = {
+  type: 'checklist-item';
+  checked: boolean;
   children: (CustomText | EmptyText)[];
 };
 
@@ -38,12 +67,6 @@ export type BlockQuoteElement = {
   children: (CustomText | EmptyText)[];
 };
 
-export type ChecklistItemElement = {
-  type: 'checklist-item';
-  checked: boolean;
-  children: (CustomText | EmptyText)[];
-};
-
 export type ChecklistElement = {
   type: 'checklist';
   children: ChecklistItemElement[];
@@ -52,68 +75,56 @@ export type ChecklistElement = {
 // Union type for all custom elements
 export type CustomElement = 
   | ParagraphElement 
-  | HeadingElement 
+  | HeadingOneElement
+  | HeadingTwoElement
+  | HeadingThreeElement
+  | HeadingFourElement
+  | HeadingFiveElement
+  | HeadingSixElement
   | ListItemElement 
+  | ChecklistItemElement
   | BulletedListElement 
   | NumberedListElement 
   | BlockQuoteElement
-  | ChecklistItemElement
   | ChecklistElement;
 
 // Type for render element props with our custom element type
-export type CustomRenderElementProps = RenderElementProps & {
-  element: CustomElement;
+export type CustomRenderElementProps = Omit<RenderElementProps, 'element'> & {
+  element: TypesCustomElement;
 };
 
-// Checkbox component for checklist items
-const CheckboxComponent = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => {
-  return (
-    <span 
-      contentEditable={false} 
-      className="mr-2 inline-flex"
-      onClick={(e) => {
-        e.preventDefault();
-        onChange();
-      }}
-    >
-      <input 
-        type="checkbox" 
-        checked={checked} 
-        onChange={(e) => {
-          e.preventDefault();
-          onChange();
-        }}
-        className="mr-1 h-4 w-4 cursor-pointer"
-      />
-    </span>
-  );
-};
+// Removed unused CheckboxComponent
 
 // Render element component
 export const RenderElement = (props: CustomRenderElementProps): ReactElement => {
   const { attributes, children, element } = props;
-  const editor = useSlate() as CustomEditor;
+  const editor = useSlateStatic();
+
+  // Handle checkbox click to toggle the checked state
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const path = ReactEditor.findPath(editor, element);
+    Transforms.setNodes(
+      editor,
+      { checked: event.target.checked },
+      { at: path }
+    );
+  };
 
   switch (element.type) {
     case 'paragraph':
       return <p {...attributes}>{children}</p>;
-    case 'heading':
-      switch (element.level) {
-        case 1:
-          return <h1 {...attributes}>{children}</h1>;
-        case 2:
-          return <h2 {...attributes}>{children}</h2>;
-        case 3:
-          return <h3 {...attributes}>{children}</h3>;
-        case 4:
-          return <h4 {...attributes}>{children}</h4>;
-        case 5:
-          return <h5 {...attributes}>{children}</h5>;
-        case 6:
-          return <h6 {...attributes}>{children}</h6>;
-        default:
-          return <h2 {...attributes}>{children}</h2>;
-      }
+    case 'heading-one':
+      return <h1 {...attributes}>{children}</h1>;
+    case 'heading-two':
+      return <h2 {...attributes}>{children}</h2>;
+    case 'heading-three':
+      return <h3 {...attributes}>{children}</h3>;
+    case 'heading-four':
+      return <h4 {...attributes}>{children}</h4>;
+    case 'heading-five':
+      return <h5 {...attributes}>{children}</h5>;
+    case 'heading-six':
+      return <h6 {...attributes}>{children}</h6>;
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>;
     case 'numbered-list':
@@ -122,25 +133,21 @@ export const RenderElement = (props: CustomRenderElementProps): ReactElement => 
       return <li {...attributes}>{children}</li>;
     case 'checklist-item':
       return (
-        <div className="flex items-start" {...attributes}>
-          <CheckboxComponent 
-            checked={element.checked} 
-            onChange={() => {
-              const path = ReactEditor.findPath(editor, element);
-              Transforms.setNodes<ChecklistItemElement>(
-                editor,
-                { checked: !element.checked },
-                { at: path }
-              );
-            }}
-          />
-          <span className={element.checked ? "line-through text-gray-500" : ""}>
-            {children}
+        <div
+          {...attributes}
+          className="flex items-start gap-2 my-1 pl-1"
+          contentEditable={false}
+        >
+          <span contentEditable={false} className="mr-2 mt-[3px]">
+            <input
+              type="checkbox"
+              checked={element.checked || false}
+              onChange={handleCheckboxChange}
+            />
           </span>
+          <span contentEditable>{children}</span>
         </div>
       );
-    case 'checklist':
-      return <div className="checklist" {...attributes}>{children}</div>;
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
     default:

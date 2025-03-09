@@ -1,0 +1,86 @@
+{
+  "numStartups": 2,
+  "autoUpdaterStatus": "disabled",
+  "customApiKeyResponses": {
+    "approved": [
+      "EiZXmt7Mrsw-s84EPAAA",
+      "sJXamU1X5tw-Torb5wAA"
+    ],
+    "rejected": []
+  },
+  "userID": "875553b1aa9ad202a50e06f679fefca334f4fbe7164d1a80968f0b74a1c8c63e",
+  "oauthAccount": {
+    "accountUuid": "d3f8a5e1-f219-4135-a086-848869cc75d5",
+    "emailAddress": "maxim@sacredgraph.com",
+    "organizationUuid": "06a70f64-97d3-4de6-819e-b51a35590ddc"
+  },
+  "primaryApiKey": "<your-anthropic-api-key>",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "0.2.27",
+  "projects": {
+    "/app": {
+      "allowedTools": [
+        "Bash(echo:*)",
+        "Bash(ls:*)",
+        "Bash(pwd:*)",
+        "Bash(cd:*)",
+        "Bash(git:*)",
+        "Bash(npm:*)",
+        "Bash(npx:*)",
+        "Bash(mkdir:*)",
+        "Bash(gh pr create:*)",
+        "Bash(git add:*)",
+        "Bash(git checkout:*)",
+        "Bash(git commit:*)",
+        "Bash(git log:*)",
+        "Bash(git push:*)",
+        "Bash(npm run:*)"
+      ],
+      "context": {},
+      "history": [],
+      "dontCrawlDirectory": false,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "ignorePatterns": [],
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastDuration": 23505,
+      "lastSessionId": "5bb54f10-37d5-4b6d-b634-79955f5048d8"
+    },
+    "/Users/mgladkov/Projects/startups/claude-test": {
+      "allowedTools": [],
+      "history": [
+        "/login ",
+        "Test"
+      ],
+      "dontCrawlDirectory": false,
+      "enableArchitectTool": false,
+      "mcpContextUris": [],
+      "mcpServers": {},
+      "approvedMcprcServers": [],
+      "rejectedMcprcServers": [],
+      "hasTrustDialogAccepted": true,
+      "ignorePatterns": [],
+      "hasCompletedProjectOnboarding": true,
+      "lastCost": 0,
+      "lastAPIDuration": 0,
+      "lastDuration": 61434,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastSessionId": "c7a43d13-7468-4ee2-bdd3-7516015a13bc"
+    }
+  },
+  "doctorShownAtSession": 0,
+  "bypassPermissionsModeAccepted": true,
+  "defaultModel": "claude-3-opus-20240229",
+  "defaultMaxTokens": 4000,
+  "defaultTemperature": 0.7,
+  "defaultTopP": 0.9,
+  "defaultTopK": 40,
+  "defaultSystemPrompt": "You are Claude, an AI assistant created by Anthropic to be helpful, harmless, and honest.",
+  "lastReleaseNotesSeen": "0.2.32"
+}

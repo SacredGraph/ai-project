@@ -2,9 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { createEditor, Descendant, Range } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { RenderElement, CustomElement } from './elements';
+import { RenderElement } from './elements';
 import { RenderLeaf } from './utils';
 import Toolbar from './toolbar';
+import { CustomElement } from './types';
+import './editor.css';
 
 export interface SlateEditorProps {
   value: Descendant[];

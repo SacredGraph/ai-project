@@ -1,8 +1,7 @@
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { RenderLeafProps } from 'slate-react';
-import { CustomText } from './types';
+import { CustomText, ElementType, CustomElement } from './types';
 import React, { ReactElement } from 'react';
-import { ChecklistItemElement, ParagraphElement } from './elements';
 
 // Type for custom leaf props
 interface CustomRenderLeafProps extends RenderLeafProps {
@@ -104,29 +103,32 @@ export const toggleBlock = (
 
   // Wrap in list if needed
   if (!isActive && isList) {
-    const block = { type: format, children: [] };
+    const block: CustomElement = { 
+      type: format as ElementType, 
+      children: [] 
+    };
     Transforms.wrapNodes(editor, block);
   }
 };
 
 // Shortcut functions for blocks
-export const toggleHeading = (editor: Editor, level: number) => 
-  toggleBlock(editor, 'heading', { level });
+export const toggleHeadingOne = (editor: Editor) => toggleBlock(editor, 'heading-one');
+export const toggleHeadingTwo = (editor: Editor) => toggleBlock(editor, 'heading-two');
+export const toggleHeadingThree = (editor: Editor) => toggleBlock(editor, 'heading-three');
 export const toggleList = (editor: Editor, format: 'bulleted-list' | 'numbered-list') => 
   toggleBlock(editor, format);
 export const toggleBlockQuote = (editor: Editor) => toggleBlock(editor, 'block-quote');
 
 // Toggle checklist item
-export const toggleChecklist = (editor: Editor) => {
+export const toggleChecklistItem = (editor: Editor) => {
   const isActive = isBlockActive(editor, 'checklist-item');
   
   // Unwrap any list items if needed
   Transforms.unwrapNodes(editor, {
     match: (n) => {
       if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
-        // Need to cast through unknown first to avoid TypeScript errors
         const element = n as unknown as { type?: string };
-        if (element.type && ['bulleted-list', 'numbered-list', 'checklist'].includes(element.type)) {
+        if (element.type && ['bulleted-list', 'numbered-list'].includes(element.type)) {
           return true;
         }
       }
@@ -135,23 +137,12 @@ export const toggleChecklist = (editor: Editor) => {
     split: true,
   });
 
-  // Set the nodes to checklist items or paragraphs
-  if (isActive) {
-    Transforms.setNodes<ParagraphElement>(editor, {
-      type: 'paragraph',
-    });
-  } else {
-    Transforms.setNodes<ChecklistItemElement>(editor, {
-      type: 'checklist-item',
-      checked: false,
-    });
-  }
+  const newProperties: Record<string, unknown> = {
+    type: isActive ? 'paragraph' : 'checklist-item',
+    checked: isActive ? undefined : false,
+  };
 
-  // If we're creating checklist items, wrap them in a checklist container
-  if (!isActive) {
-    const block = { type: 'checklist', children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
+  Transforms.setNodes(editor, newProperties);
 };
 
 // Leaf rendering

@@ -1,0 +1,258 @@
+swagger: '2.0'
+info:
+  title: Claude API Service
+  description: API Gateway configuration to protect Cloud Run service from spam requests
+  version: 1.0.0
+host: never-sleeps-persona-372949173541.europe-west1.run.app
+schemes:
+  - https
+produces:
+  - application/json
+
+paths:
+  # Root endpoint
+  /api:
+    get:
+      summary: Index page
+      description: Returns the main index page
+      operationId: getIndex
+      responses:
+        '200':
+          description: Successful operation
+
+  # Health check endpoint
+  /api/health:
+    get:
+      summary: Health check
+      description: Returns the health status of the API
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "ok"
+
+  # Test Claude endpoint
+  /api/test-claude:
+    get:
+      summary: Test Claude
+      description: Endpoint to test Claude functionality
+      operationId: testClaude
+      responses:
+        '200':
+          description: Successful operation
+
+  # Plan resource endpoint
+  /api/plan:
+    post:
+      summary: Create plan
+      description: Creates a new plan
+      operationId: createPlan
+      parameters:
+        - name: planRequest
+          in: body
+          description: Plan request object
+          required: true
+          schema:
+            $ref: '#/definitions/PlanRequest'
+      responses:
+        '200':
+          description: Plan created successfully
+          schema:
+            $ref: '#/definitions/PlanResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  # Act resource endpoint
+  /api/act:
+    post:
+      summary: Perform action
+      description: Performs an action based on the request
+      operationId: performAction
+      parameters:
+        - name: actRequest
+          in: body
+          description: Action request object
+          required: true
+          schema:
+            $ref: '#/definitions/ActRequest'
+      responses:
+        '200':
+          description: Action performed successfully
+          schema:
+            $ref: '#/definitions/ActResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  # Feedback resource endpoint
+  /api/feedback:
+    post:
+      summary: Submit feedback
+      description: Submits feedback for a previous action
+      operationId: submitFeedback
+      parameters:
+        - name: feedbackRequest
+          in: body
+          description: Feedback request object
+          required: true
+          schema:
+            $ref: '#/definitions/FeedbackRequest'
+      responses:
+        '200':
+          description: Feedback submitted successfully
+          schema:
+            $ref: '#/definitions/FeedbackResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  # Epic resource endpoint
+  /api/epic:
+    post:
+      summary: Create epic
+      description: Creates a new epic
+      operationId: createEpic
+      parameters:
+        - name: epicRequest
+          in: body
+          description: Epic request object
+          required: true
+          schema:
+            $ref: '#/definitions/EpicRequest'
+      responses:
+        '200':
+          description: Epic created successfully
+          schema:
+            $ref: '#/definitions/EpicResponse'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+definitions:
+  PlanRequest:
+    type: object
+    properties:
+      prompt:
+        type: string
+        description: The prompt for planning
+      context:
+        type: object
+        description: Additional context for the plan
+
+  PlanResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        description: The result of the planning operation
+      error:
+        type: string
+        description: Error message if any
+
+  ActRequest:
+    type: object
+    properties:
+      prompt:
+        type: string
+        description: The prompt for the action
+      context:
+        type: object
+        description: Additional context for the action
+
+  ActResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        description: The result of the action
+      error:
+        type: string
+        description: Error message if any
+
+  FeedbackRequest:
+    type: object
+    properties:
+      feedback:
+        type: string
+        description: The feedback content
+      context:
+        type: object
+        description: Additional context for the feedback
+
+  FeedbackResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        description: The result of the feedback submission
+      error:
+        type: string
+        description: Error message if any
+
+  EpicRequest:
+    type: object
+    properties:
+      summary:
+        type: string
+        description: Summary of the epic
+      description:
+        type: string
+        description: Detailed description of the epic
+      issue_key:
+        type: string
+        description: Issue key for the epic
+
+  EpicResponse:
+    type: object
+    properties:
+      result:
+        type: string
+        description: The result of the epic creation
+      error:
+        type: string
+        description: Error message if any
+
+  ErrorResult:
+    type: object
+    properties:
+      error:
+        type: string
+        description: Error message
+
+x-google-backend:
+  address: https://never-sleeps-persona-372949173541.europe-west1.run.app
+  protocol: h2
+  deadline: 600
+
+# Rate limiting configuration
+x-google-ratelimit:
+  qps: 100
+  userQps: 10
+  daily: 10000
+  userDaily: 1000
+  
+# CORS configuration
+x-google-cors:
+  allow-origins:
+    - "*"  # Consider restricting this in production
+  allow-methods:
+    - GET
+    - POST
+    - OPTIONS
+  allow-headers:
+    - Content-Type
+  expose-headers:
+    - Content-Length
+    - Content-Type
+  max-age: 3600
+  allow-credentials: true 
