@@ -2,7 +2,6 @@ import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { RenderLeafProps } from 'slate-react';
 import { CustomText, ElementType, CustomElement } from './types';
 import React, { ReactElement } from 'react';
-import { ChecklistItemElement, ParagraphElement } from './elements';
 
 // Type for custom leaf props
 interface CustomRenderLeafProps extends RenderLeafProps {
