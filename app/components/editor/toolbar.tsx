@@ -9,6 +9,7 @@ import {
   toggleHeading,
   toggleList,
   toggleBlockQuote,
+  toggleChecklist,
   isMarkActive,
   isBlockActive
 } from './utils';
@@ -115,6 +116,12 @@ const Toolbar: React.FC<ToolbarProps> = ({ className = '', selection }) => {
         icon="❝"
         onClick={() => toggleBlockQuote(editor)}
         isActive={isBlockActive(editor, 'block-quote')}
+      />
+      <ToolbarButton
+        format="checklist-item"
+        icon="☑"
+        onClick={() => toggleChecklist(editor)}
+        isActive={isBlockActive(editor, 'checklist-item')}
       />
     </div>
   );

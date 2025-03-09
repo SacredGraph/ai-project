@@ -2,6 +2,7 @@ import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { RenderLeafProps } from 'slate-react';
 import { CustomText } from './types';
 import React, { ReactElement } from 'react';
+import { ChecklistItemElement, ParagraphElement } from './elements';
 
 // Type for custom leaf props
 interface CustomRenderLeafProps extends RenderLeafProps {
@@ -114,6 +115,44 @@ export const toggleHeading = (editor: Editor, level: number) =>
 export const toggleList = (editor: Editor, format: 'bulleted-list' | 'numbered-list') => 
   toggleBlock(editor, format);
 export const toggleBlockQuote = (editor: Editor) => toggleBlock(editor, 'block-quote');
+
+// Toggle checklist item
+export const toggleChecklist = (editor: Editor) => {
+  const isActive = isBlockActive(editor, 'checklist-item');
+  
+  // Unwrap any list items if needed
+  Transforms.unwrapNodes(editor, {
+    match: (n) => {
+      if (!Editor.isEditor(n) && SlateElement.isElement(n)) {
+        // Need to cast through unknown first to avoid TypeScript errors
+        const element = n as unknown as { type?: string };
+        if (element.type && ['bulleted-list', 'numbered-list', 'checklist'].includes(element.type)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    split: true,
+  });
+
+  // Set the nodes to checklist items or paragraphs
+  if (isActive) {
+    Transforms.setNodes<ParagraphElement>(editor, {
+      type: 'paragraph',
+    });
+  } else {
+    Transforms.setNodes<ChecklistItemElement>(editor, {
+      type: 'checklist-item',
+      checked: false,
+    });
+  }
+
+  // If we're creating checklist items, wrap them in a checklist container
+  if (!isActive) {
+    const block = { type: 'checklist', children: [] };
+    Transforms.wrapNodes(editor, block);
+  }
+};
 
 // Leaf rendering
 export const RenderLeaf = (props: CustomRenderLeafProps): ReactElement => {

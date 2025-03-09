@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { Button, Flex, Card, Text, Heading, Box, Tabs, Badge, Tooltip } from '@radix-ui/themes';
-import { InfoCircledIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { InfoCircledIcon, MoonIcon, SunIcon, PlusCircledIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 export default function Home() {
   return (
     <Flex direction="column" align="center" justify="center" className="min-h-screen p-8">
-      <Heading size="7" className="mb-8">Hello world with Radix UI!</Heading>
+      <Heading size="7" className="mb-8">Checklist App with Radix UI</Heading>
       
       <Card className="mb-8 max-w-md">
         <Flex direction="column" gap="4" align="center">
@@ -43,6 +44,7 @@ export default function Home() {
               <Box className="p-4">
                 <Text as="p" size="2">
                   This app demonstrates the integration of Radix UI with Next.js and Tailwind CSS.
+                  Create checklists with our rich text editor that supports formatting and checkbox items.
                   The theme automatically adapts to your system preferences.
                 </Text>
                 
@@ -67,16 +69,29 @@ export default function Home() {
         </Flex>
       </Card>
       
-      <Tooltip content="Click to send an email">
-        <Button size="3" variant="solid" asChild>
-          <a href="mailto:maxim@sacredgraph.com?subject=Hello%20from%20AI">
-            <Flex gap="1" align="center">
-              <InfoCircledIcon />
-              Contact Me
-            </Flex>
-          </a>
-        </Button>
-      </Tooltip>
+      <Flex gap="3" mt="4">
+        <Tooltip content="Create a new checklist">
+          <Button size="3" variant="solid" color="green" asChild>
+            <Link href="/checklists/new">
+              <Flex gap="1" align="center">
+                <PlusCircledIcon />
+                New Checklist
+              </Flex>
+            </Link>
+          </Button>
+        </Tooltip>
+
+        <Tooltip content="Click to send an email">
+          <Button size="3" variant="solid" asChild>
+            <a href="mailto:maxim@sacredgraph.com?subject=Hello%20from%20AI">
+              <Flex gap="1" align="center">
+                <InfoCircledIcon />
+                Contact Me
+              </Flex>
+            </a>
+          </Button>
+        </Tooltip>
+      </Flex>
     </Flex>
   );
 }

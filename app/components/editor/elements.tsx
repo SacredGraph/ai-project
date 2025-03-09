@@ -1,8 +1,10 @@
 import React from 'react';
-import { RenderElementProps } from 'slate-react';
+import { RenderElementProps, ReactEditor } from 'slate-react';
 import type { ReactElement } from 'react';
+import { useSlate } from 'slate-react';
+import { Transforms } from 'slate';
 
-import { EmptyText, CustomText } from './types';
+import { EmptyText, CustomText, CustomEditor } from './types';
 
 // Define the types for our custom elements
 export type ParagraphElement = {
@@ -36,6 +38,17 @@ export type BlockQuoteElement = {
   children: (CustomText | EmptyText)[];
 };
 
+export type ChecklistItemElement = {
+  type: 'checklist-item';
+  checked: boolean;
+  children: (CustomText | EmptyText)[];
+};
+
+export type ChecklistElement = {
+  type: 'checklist';
+  children: ChecklistItemElement[];
+};
+
 // Union type for all custom elements
 export type CustomElement = 
   | ParagraphElement 
@@ -43,16 +56,43 @@ export type CustomElement =
   | ListItemElement 
   | BulletedListElement 
   | NumberedListElement 
-  | BlockQuoteElement;
+  | BlockQuoteElement
+  | ChecklistItemElement
+  | ChecklistElement;
 
 // Type for render element props with our custom element type
 export type CustomRenderElementProps = RenderElementProps & {
   element: CustomElement;
 };
 
+// Checkbox component for checklist items
+const CheckboxComponent = ({ checked, onChange }: { checked: boolean; onChange: () => void }) => {
+  return (
+    <span 
+      contentEditable={false} 
+      className="mr-2 inline-flex"
+      onClick={(e) => {
+        e.preventDefault();
+        onChange();
+      }}
+    >
+      <input 
+        type="checkbox" 
+        checked={checked} 
+        onChange={(e) => {
+          e.preventDefault();
+          onChange();
+        }}
+        className="mr-1 h-4 w-4 cursor-pointer"
+      />
+    </span>
+  );
+};
+
 // Render element component
 export const RenderElement = (props: CustomRenderElementProps): ReactElement => {
   const { attributes, children, element } = props;
+  const editor = useSlate() as CustomEditor;
 
   switch (element.type) {
     case 'paragraph':
@@ -80,6 +120,27 @@ export const RenderElement = (props: CustomRenderElementProps): ReactElement => 
       return <ol {...attributes}>{children}</ol>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
+    case 'checklist-item':
+      return (
+        <div className="flex items-start" {...attributes}>
+          <CheckboxComponent 
+            checked={element.checked} 
+            onChange={() => {
+              const path = ReactEditor.findPath(editor, element);
+              Transforms.setNodes<ChecklistItemElement>(
+                editor,
+                { checked: !element.checked },
+                { at: path }
+              );
+            }}
+          />
+          <span className={element.checked ? "line-through text-gray-500" : ""}>
+            {children}
+          </span>
+        </div>
+      );
+    case 'checklist':
+      return <div className="checklist" {...attributes}>{children}</div>;
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
     default:
